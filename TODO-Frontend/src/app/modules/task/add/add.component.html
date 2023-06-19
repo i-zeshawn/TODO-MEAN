@@ -31,5 +31,6 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-button color="primary" [disabled]="!taskForm.valid" (click)="onSubmit()">Add</button>
+  <button mat-button color="primary" [disabled]="!taskForm.valid"
+          (click)="onSubmit()">{{isEditMode ? 'Update' : 'Add'}}</button>
 </mat-dialog-actions>

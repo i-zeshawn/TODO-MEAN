@@ -23,4 +23,14 @@ export class TaskService {
       map((response: any) => response.body)
     );
   }
+
+  updateTask (id: string,task: Task) {
+    return this.http.put(environment.API_URL + 'tasks/' + id, task).pipe(
+      map((response: any) => response.body)
+    );
+  }
+
+  deleteTask(id: Number) {
+    return this.http.delete(environment.API_URL + 'tasks/' + id);
+  }
 }

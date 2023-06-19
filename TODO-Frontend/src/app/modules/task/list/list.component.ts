@@ -7,6 +7,7 @@ import {TaskService} from "../task.service";
 import {Task} from "../typings/Task.typings";
 import {AddTaskComponent} from "../add/add.component";
 import {MatDialog} from "@angular/material/dialog";
+import {ToastrService} from "ngx-toastr";
 
 
 @Component({
@@ -30,7 +31,7 @@ export class ListComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private taskService: TaskService, private dialog: MatDialog) {
+  constructor(private taskService: TaskService, private dialog: MatDialog, private toastrService: ToastrService) {
     this.getTasks();
   }
 
@@ -63,5 +64,25 @@ export class ListComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe(() => {
       this.getTasks()
     });
+  }
+
+  openEditTaskModal(task: Task) {
+    const dialogRef = this.dialog.open(AddTaskComponent, {
+      width: '800px',
+      data: {task}
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.getTasks()
+    });
+  }
+
+  deleteTask(id: number) {
+    this.taskService.deleteTask(id).subscribe((data) => {
+      this.toastrService.success("Task Deleted Successfully");
+      this.getTasks()
+    }, (error) => {
+      this.toastrService.error(error.error.message)
+    })
   }
 }
